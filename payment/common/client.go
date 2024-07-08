@@ -75,11 +75,13 @@ func (c *Client) Create(subject, outTradeNo, totalAmount, buyerId string) (*Alip
 	if err != nil {
 		return nil, err
 	}
-	if nil != c.VerifyResp(string(body), "alipay_trade_create_response") {
+	err = c.VerifyResp(string(body), "alipay_trade_create_response")
+	if err != nil {
 		return nil, err
 	}
 	ret := &AlipayTradeCreateResponse{}
-	if nil != json.Unmarshal(body, &ret) {
+	err = json.Unmarshal(body, &ret)
+	if err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -111,11 +113,13 @@ func (c *Client) Query(outTradeNo string) (*AlipayTradeQueryResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	if nil != c.VerifyResp(string(body), "alipay_trade_query_response") {
+	err = c.VerifyResp(string(body), "alipay_trade_query_response")
+	if err != nil {
 		return nil, err
 	}
 	ret := &AlipayTradeQueryResponse{}
-	if nil != json.Unmarshal(body, &ret) {
+	err = json.Unmarshal(body, &ret)
+	if err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -148,11 +152,13 @@ func (c *Client) Refund(outTradeNo, refundAmount string) (*AlipayTradeRefundResp
 	if err != nil {
 		return nil, err
 	}
-	if nil != c.VerifyResp(string(body), "alipay_trade_refund_response") {
+	err = c.VerifyResp(string(body), "alipay_trade_refund_response")
+	if err != nil {
 		return nil, err
 	}
 	ret := &AlipayTradeRefundResponse{}
-	if nil != json.Unmarshal(body, &ret) {
+	err = json.Unmarshal(body, &ret)
+	if err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -184,11 +190,13 @@ func (c *Client) Close(outTradeNo string) (*AlipayTradeCloseResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	if nil != c.VerifyResp(string(body), "alipay_trade_close_response") {
+	err = c.VerifyResp(string(body), "alipay_trade_close_response")
+	if err != nil {
 		return nil, err
 	}
 	ret := &AlipayTradeCloseResponse{}
-	if nil != json.Unmarshal(body, &ret) {
+	err = json.Unmarshal(body, &ret)
+	if err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -220,11 +228,13 @@ func (c *Client) Cancel(outTradeNo string) (*AlipayTradeCancelResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	if nil != c.VerifyResp(string(body), "alipay_trade_cancel_response") {
+	err = c.VerifyResp(string(body), "alipay_trade_cancel_response")
+	if err != nil {
 		return nil, err
 	}
 	ret := &AlipayTradeCancelResponse{}
-	if nil != json.Unmarshal(body, &ret) {
+	err = json.Unmarshal(body, &ret)
+	if err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -257,11 +267,13 @@ func (c *Client) QueryRefund(outTradeNo, outRequestNo string) (*AlipayTradeCance
 	if err != nil {
 		return nil, err
 	}
-	if nil != c.VerifyResp(string(body), "alipay_trade_fastpay_refund_query_response") {
+	err = c.VerifyResp(string(body), "alipay_trade_fastpay_refund_query_response")
+	if err != nil {
 		return nil, err
 	}
 	ret := &AlipayTradeCancelResponse{}
-	if nil != json.Unmarshal(body, &ret) {
+	err = json.Unmarshal(body, &ret)
+	if err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -294,11 +306,13 @@ func (c *Client) DownloadBill(billType, billDate string) (*AlipayDataDataservice
 	if err != nil {
 		return nil, err
 	}
-	if nil != c.VerifyResp(string(body), "alipay_data_dataservice_bill_downloadurl_query_response") {
+	err = c.VerifyResp(string(body), "alipay_data_dataservice_bill_downloadurl_query_response")
+	if err != nil {
 		return nil, err
 	}
 	ret := &AlipayDataDataserviceBillDownloadurlQueryResponse{}
-	if nil != json.Unmarshal(body, &ret) {
+	err = json.Unmarshal(body, &ret)
+	if err != nil {
 		return nil, err
 	}
 	return ret, nil

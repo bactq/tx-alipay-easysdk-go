@@ -76,11 +76,13 @@ func (c *Client) Pay(subject, outTradeNo, totalAmount, authCode string) (*Alipay
 	if err != nil {
 		return nil, err
 	}
-	if nil != c.VerifyResp(string(body), "alipay_trade_pay_response") {
+	err = c.VerifyResp(string(body), "alipay_trade_pay_response")
+	if err != nil {
 		return nil, err
 	}
 	ret := &AlipayTradePayResponse{}
-	if nil != json.Unmarshal(body, &ret) {
+	err = json.Unmarshal(body, &ret)
+	if err != nil {
 		return nil, err
 	}
 	return ret, nil
@@ -114,11 +116,13 @@ func (c *Client) PreCreate(subject, outTradeNo, totalAmount string) (*AlipayTrad
 	if err != nil {
 		return nil, err
 	}
-	if nil != c.VerifyResp(string(body), "alipay_trade_precreate_response") {
+	err = c.VerifyResp(string(body), "alipay_trade_precreate_response")
+	if err != nil {
 		return nil, err
 	}
 	ret := &AlipayTradePrecreateResponse{}
-	if nil != json.Unmarshal(body, &ret) {
+	err = json.Unmarshal(body, &ret)
+	if err != nil {
 		return nil, err
 	}
 	return ret, nil
