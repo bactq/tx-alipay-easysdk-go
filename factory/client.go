@@ -17,11 +17,12 @@ import (
 )
 
 type Client struct {
-	AppId     string
-	BaseUrl   string
-	NotifyUrl string
-	priv      *rsa.PrivateKey // 应用私钥
-	pub       *rsa.PublicKey  // 支付宝公钥
+	AppId      string
+	BaseUrl    string
+	priv       *rsa.PrivateKey // 应用私钥
+	pub        *rsa.PublicKey  // 支付宝公钥
+	TextParams []string
+	BizParams  []string
 }
 
 func NewAliPay() (*Client, error) {
@@ -70,7 +71,7 @@ func Verify(content, sign string, pk *rsa.PublicKey) bool {
 	return err == nil
 }
 
-func (c *Client) SignData(datas ...[]string) (string, error) {
+func (c *Client) SignParams(datas ...[]string) ([]string, error) {
 	var kvs [][2]string
 	for _, data := range datas {
 		for i := 0; i+1 < len(data); i += 2 {
@@ -90,11 +91,15 @@ func (c *Client) SignData(datas ...[]string) (string, error) {
 		bb.WriteByte('=')
 		bb.WriteString(v[1])
 	}
-	return Sign(bb.Bytes(), c.priv)
+	sign, err := Sign(bb.Bytes(), c.priv)
+	if err != nil {
+		return nil, err
+	}
+	return []string{
+		"sign", sign,
+	}, nil
 }
 
-// 共会响应两种类型的数据: json字符串和base64_rsa2密文
-// 本次使用非加密的json字符串
 func getResponseContent(body, methodResp string) string {
 	const (
 		LEFT_BRACE    = '{'
@@ -236,4 +241,19 @@ func (c *Client) ToJson(kv []string) string {
 	}
 	bb.WriteByte('}')
 	return bb.String()
+}
+
+func (c *Client) BizContent(bizParams []string) []string {
+	return []string{
+		"biz_content", c.ToJson(bizParams),
+	}
+}
+func (c *Client) InjectTextParam(key, value string) *Client {
+	c.TextParams = append(c.TextParams, key, value)
+	return c
+}
+
+func (c *Client) InjectBizParam(key, value string) *Client {
+	c.BizParams = append(c.BizParams, key, value)
+	return c
 }
