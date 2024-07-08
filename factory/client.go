@@ -9,6 +9,7 @@ import (
 	"crypto/x509"
 	"encoding/base64"
 	"encoding/pem"
+	"fmt"
 	"net/url"
 	"sort"
 	"strings"
@@ -143,10 +144,13 @@ func getResponseContent(body, methodResp string) string {
 	return body[start:end]
 }
 
-func (c *Client) VerifyResp(body, method string) bool {
+func (c *Client) VerifyResp(body, method string) error {
 	content := getResponseContent(body, method)
 	sign := getResponseContent(body, "sign")
-	return Verify(content, sign, c.pub)
+	if !Verify(content, sign, c.pub) {
+		return fmt.Errorf("%s 验签失败", method)
+	}
+	return nil
 }
 
 func Encode(v url.Values) string {

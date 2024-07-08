@@ -2,7 +2,6 @@ package common
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -55,18 +54,14 @@ func (c *Client) Create(subject, outTradeNo, totalAmount, buyerId string) (*Alip
 	if err != nil {
 		return nil, err
 	}
-	ret := &AlipayTradeCreateResponse{}
-	err = json.Unmarshal(body, &ret)
-	if err != nil {
+	if nil != c.VerifyResp(string(body), "alipay_trade_create_response") {
 		return nil, err
 	}
-	//验签
-	if c.VerifyResp(string(body), "alipay_trade_create_response") {
-		return ret, nil
-	} else {
-		// 验签失败
-		return nil, errors.New("alipay_trade_create_response:验签失败")
+	ret := &AlipayTradeCreateResponse{}
+	if nil != json.Unmarshal(body, &ret) {
+		return nil, err
 	}
+	return ret, nil
 }
 
 func (c *Client) Query(outTradeNo string) (*AlipayTradeQueryResponse, error) {
@@ -102,16 +97,12 @@ func (c *Client) Query(outTradeNo string) (*AlipayTradeQueryResponse, error) {
 	if err != nil {
 		return nil, err
 	}
-	ret := &AlipayTradeQueryResponse{}
-	err = json.Unmarshal(body, &ret)
-	if err != nil {
+	if nil != c.VerifyResp(string(body), "alipay_trade_query_response") {
 		return nil, err
 	}
-	//验签
-	if c.VerifyResp(string(body), "alipay_trade_query_response") {
-		return ret, nil
-	} else {
-		// 验签失败
-		return nil, errors.New("alipay_trade_query_response:验签失败")
+	ret := &AlipayTradeQueryResponse{}
+	if nil != json.Unmarshal(body, &ret) {
+		return nil, err
 	}
+	return ret, nil
 }
