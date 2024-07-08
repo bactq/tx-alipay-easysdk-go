@@ -194,7 +194,7 @@ func (c *Client) VerifyNotify(notify string) bool {
 	return Verify(Encode(urlMap), sign, c.pub)
 }
 
-func (c *Client) ToUrlEncodedRequestBody(datas ...[]string) string {
+func (c *Client) ToUrlEncoded(datas ...[]string) string {
 	urlValues := url.Values{}
 	for _, data := range datas {
 		for i := 0; i+1 < len(data); i += 2 {

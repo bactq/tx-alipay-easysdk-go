@@ -40,8 +40,8 @@ func (c *Client) Create(subject, outTradeNo, totalAmount, buyerId string) (*Alip
 	signParams := []string{
 		"sign", sign,
 	}
-	req, err := http.NewRequest("POST", fmt.Sprintf("%s?%s", c.BaseUrl, c.ToUrlEncodedRequestBody(signParams, systemParams, textParams)),
-		strings.NewReader(c.ToUrlEncodedRequestBody(bizContent)))
+	req, err := http.NewRequest("POST", fmt.Sprintf("%s?%s", c.BaseUrl, c.ToUrlEncoded(signParams, systemParams, textParams)),
+		strings.NewReader(c.ToUrlEncoded(bizContent)))
 	if err != nil {
 		return nil, err
 	}
@@ -83,8 +83,8 @@ func (c *Client) Query(outTradeNo string) (*AlipayTradeQueryResponse, error) {
 	signParams := []string{
 		"sign", sign,
 	}
-	req, err := http.NewRequest("POST", fmt.Sprintf("%s?%s", c.BaseUrl, c.ToUrlEncodedRequestBody(signParams, systemParams, textParams)),
-		strings.NewReader(c.ToUrlEncodedRequestBody(bizContent)))
+	req, err := http.NewRequest("POST", fmt.Sprintf("%s?%s", c.BaseUrl, c.ToUrlEncoded(signParams, systemParams, textParams)),
+		strings.NewReader(c.ToUrlEncoded(bizContent)))
 	if err != nil {
 		return nil, err
 	}
